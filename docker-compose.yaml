@@ -13,6 +13,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+    image: tonzi/docker_node_week7a-wk5-class-app-dockerized
     ports:
       - 3000:3000
     networks:
