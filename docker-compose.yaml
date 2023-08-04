@@ -1,0 +1,55 @@
+version: '3'
+
+networks:
+    test-network:
+        external: true
+
+volumes:
+  test-vol:
+
+services:
+  app:
+    container_name: docker_node_wk5-class
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - 3000:3000
+    networks:
+      - test-network
+    # networks:
+    #   test-network:
+    #     ipv4_address: 172.18.0.10
+    volumes:
+      - test-vol:/app
+    depends_on:
+      - mongo
+    environment:
+      PORT: 3000
+      DATABASE_URL: 'mongodb://group1:group1@mongo:27017/'
+
+  mongo:
+    container_name: docker_mongo_wk5-class
+    image: mongo
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: group1
+      MONGO_INITDB_ROOT_PASSWORD: group1
+    networks:
+      - test-network
+    # networks:
+    #   test-network:
+    #     ipv4_address: 172.18.0.20
+    volumes:
+      - test-vol:/data/db
+
+  # mongo-express:
+  #   image: mongo-express
+  #   restart: always
+  #   ports:
+  #     - 8081:8081
+  #   environment:
+  #     ME_CONFIG_MONGODB_ADMINUSERNAME: root
+  #     ME_CONFIG_MONGODB_ADMINPASSWORD: example
+  #     ME_CONFIG_MONGODB_URL: mongodb://root:example@mongo:27017/
+
